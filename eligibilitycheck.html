@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from okoatala-cash.vercel.app/eligibilitycheck.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 16 Jul 2025 09:42:13 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Eligibility Scan with Edge Coins</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body, html {
+      margin: 0; padding: 0; height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom right, #6a1b9a, #9c27b0);
+      overflow: hidden;
+      position: relative;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .scanner {
+      position: relative;
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 20px;
+      padding: 2rem 3rem;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      z-index: 10;
+      text-align: center;
+    }
+
+    .phase {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s forwards;
+      font-size: 1.2rem;
+      margin: 0.8rem 0;
+      user-select: none;
+    }
+    .phase:nth-child(1) {
+      animation-delay: 0.5s;
+    }
+    .phase:nth-child(2) {
+      animation-delay: 2s;
+    }
+    .phase:nth-child(3) {
+      animation-delay: 4s;
+    }
+    .phase:nth-child(4) {
+      animation-delay: 6s;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .circle {
+      margin: 2rem auto;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 4px solid white;
+      animation: pulse 1.5s ease-in-out infinite;
+      opacity: 0;
+      animation-fill-mode: forwards;
+      animation-delay: 6s;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.7; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .approved {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: #00ff90;
+      margin-top: 1rem;
+      opacity: 0;
+      animation: slideIn 1s forwards;
+      animation-delay: 7s;
+      user-select: none;
+    }
+    @keyframes slideIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .proceed-btn {
+      display: none;
+      margin-top: 2rem;
+      padding: 0.7rem 2rem;
+      border: none;
+      background: linear-gradient(to right, #9c27b0, #6a1b9a);
+      border-radius: 25px;
+      font-size: 1.1rem;
+      color: white;
+      cursor: pointer;
+      animation: fadeInUp 1s forwards;
+      animation-delay: 8s;
+      user-select: none;
+      z-index: 10;
+      position: relative;
+    }
+    .proceed-btn:hover {
+      background: linear-gradient(to right, #7e1f94, #551a70);
+    }
+
+    /* Container for edge coins */
+    #edgeCoins {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 5;
+      overflow: visible;
+    }
+
+    /* Coin style */
+    .coin {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-image: url('../upload.wikimedia.org/wikipedia/commons/thumb/7/78/2019_Kenya_1_Shilling_coin_Obverse_3.png/64px-2019_Kenya_1_Shilling_coin_Obverse_3.html');
+      background-size: contain;
+      background-repeat: no-repeat;
+      filter: drop-shadow(0 0 2px rgba(0,0,0,0.5));
+      opacity: 0.8;
+      will-change: transform;
+    }
+
+    /* Animations for coins along edges */
+
+    /* Top edge coins move slightly up/down */
+    @keyframes topWave {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(10px); }
+    }
+
+    /* Bottom edge coins move slightly up/down */
+    @keyframes bottomWave {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Left edge coins move slightly left/right */
+    @keyframes leftWave {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(8px); }
+    }
+
+    /* Right edge coins move slightly left/right */
+    @keyframes rightWave {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(-8px); }
+    }
+
+  </style>
+</head>
+<body>
+
+<div id="edgeCoins"></div>
+
+<div class="scanner">
+  <div class="phase">🔍 Scanning Identity...</div>
+  <div class="phase">📊 Analyzing Loan History...</div>
+  <div class="phase">🔐 Verifying Creditworthiness...</div>
+  <div class="circle"></div>
+  <div class="approved">✅ You’re Eligible!</div>
+  <button class="proceed-btn" onclick="window.location.href='savings.html'">Check My Limit</button>
+</div>
+
+<script>
+  const edgeCoins = document.getElementById('edgeCoins');
+  const proceedBtn = document.querySelector('.proceed-btn');
+
+  // Number of coins per edge
+  const coinsPerEdge = 10;
+
+  // Create coins along top edge
+  for (let i = 0; i < coinsPerEdge; i++) {
+    const coin = document.createElement('div');
+    coin.classList.add('coin');
+    coin.style.top = '0';
+    coin.style.left = (i * (100 / coinsPerEdge)) + 'vw';
+    coin.style.animation = `topWave 3s ease-in-out ${i * 0.3}s infinite`;
+    edgeCoins.appendChild(coin);
+  }
+
+  // Create coins along bottom edge
+  for (let i = 0; i < coinsPerEdge; i++) {
+    const coin = document.createElement('div');
+    coin.classList.add('coin');
+    coin.style.bottom = '0';
+    coin.style.left = (i * (100 / coinsPerEdge)) + 'vw';
+    coin.style.animation = `bottomWave 3s ease-in-out ${i * 0.3}s infinite`;
+    edgeCoins.appendChild(coin);
+  }
+
+  // Create coins along left edge
+  for (let i = 0; i < coinsPerEdge; i++) {
+    const coin = document.createElement('div');
+    coin.classList.add('coin');
+    coin.style.left = '0';
+    coin.style.top = (i * (100 / coinsPerEdge)) + 'vh';
+    coin.style.animation = `leftWave 3s ease-in-out ${i * 0.3}s infinite`;
+    edgeCoins.appendChild(coin);
+  }
+
+  // Create coins along right edge
+  for (let i = 0; i < coinsPerEdge; i++) {
+    const coin = document.createElement('div');
+    coin.classList.add('coin');
+    coin.style.right = '0';
+    coin.style.top = (i * (100 / coinsPerEdge)) + 'vh';
+    coin.style.animation = `rightWave 3s ease-in-out ${i * 0.3}s infinite`;
+    edgeCoins.appendChild(coin);
+  }
+
+  // Show proceed button after 8s
+  setTimeout(() => {
+    proceedBtn.style.display = 'inline-block';
+  }, 8000);
+</script>
+
+</body>
+
+<!-- Mirrored from okoatala-cash.vercel.app/eligibilitycheck.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 16 Jul 2025 09:42:15 GMT -->
+</html>
